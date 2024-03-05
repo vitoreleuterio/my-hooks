@@ -1,38 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { useRef } from 'react';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
 
-  const [quantity, setQuantity] = useState<number>(0);
-  const [price, setPrice] = useState<number>(11.3);
-  const  basePrice = 11.3;
+  const textInputRef = useRef<TextInput>(null);
 
-  const removeNumber = () => {
-    setQuantity((prevQuantity: number) => {
-      const newQuantity = prevQuantity - 1;
-      setPrice(basePrice * newQuantity)
-      return newQuantity
-    })
+  const resetButton = () => {
+
+    if(textInputRef.current){
+      textInputRef.current.focus();
+      textInputRef.current.setNativeProps({
+        text:"resetado"
+      })
+    }
   }
 
-  const addNumber = () => {
-    setQuantity((prevQuantity: number) => {
-      const newQuantity = prevQuantity + 1;
-      setPrice(basePrice * newQuantity)
-      return newQuantity
-    })
-  }
 
   return (
     <View style={styles.container}>
-      <View>
-        <Button title='-' onPress={removeNumber}/>
-        <Text>{quantity.toFixed(2)}</Text>
-        <Button title='+' onPress={addNumber}/>
-        <Text>{price.toFixed(2)}</Text>
-
-      </View>
+     <TextInput
+     ref={textInputRef}
+     style={
+      {
+        height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 1, 
+        marginBottom:10, 
+        paddingHorizontal: 10
+      }
+     }
+     
+     />
+     <Button title='resetar' onPress={resetButton}/>
     </View>
   );
 }
